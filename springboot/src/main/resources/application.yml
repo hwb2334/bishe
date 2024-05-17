@@ -1,0 +1,23 @@
+server:
+  port: 9090
+  #获取同一个session id的cookie设置
+  servlet:
+    session.cookie.secure: true
+    session.cookie.same-site: none
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bishe?serverTimezone=GMT%2b8
+    username: root
+    password: 1234
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

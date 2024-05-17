@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shenmou.springboot.mapper.OrdersMapper">
+    <insert id="insertOrders" useGeneratedKeys="true" keyProperty="ordersId">
+        INSERT INTO orders
+            (buyer_id, total_price, order_status, mall_id, delivery_method,
+            payment_method, delivery_address, notes, create_time, origin_place,
+            shiptime, arrtime, sendman_id, update_time)
+            values
+            (#{buyerId},#{totalPrice},#{orderStatus},#{mallId},#{deliveryMethod},#{paymentMethod},
+             #{deliveryAddress},#{notes},#{createTime},#{originPlace},
+             #{shiptime},#{arrtime},#{sendmanId}, #{updateTime})
+    </insert>
+</mapper>
