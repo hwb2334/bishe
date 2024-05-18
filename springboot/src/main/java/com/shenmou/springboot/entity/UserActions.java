@@ -14,7 +14,7 @@ public class UserActions {
     private Integer userId;
     @TableField(value = "rgoods_id")
     private Integer rgoodsId;
-    private Float score;
+    private Double score;
     private Integer buyed;
     private Integer clicked;
 }

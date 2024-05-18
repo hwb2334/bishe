@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shenmou.springboot.mapper.NormalMapper">
+    <resultMap id="NormalResultMap" type="com.shenmou.springboot.entity.Normal">
+        <!-- 定义ID和result映射 -->
+        <id column="id" property="id" />
+        <result column="rgoods_id" property="rgoodsId" />
+        <result column="max_buyed" property="maxBuyed" />
+        <result column="min_buyed" property="minBuyed" />
+        <result column="max_clicked" property="maxClicked" />
+        <result column="min_clicked" property="minClicked" />
+        <!-- 其他字段映射 -->
+    </resultMap>
+
+    <select id="findByGIds" parameterType="list" resultMap="NormalResultMap">
+        select * from normal where rgoods_id in <foreach item="id" collection="gIds" open="(" separator="," close=")">#{id}</foreach>
+    </select>
+</mapper>

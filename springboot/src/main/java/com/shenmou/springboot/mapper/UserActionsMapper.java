@@ -9,7 +9,7 @@ import java.util.List;
 // @Mapper
 public interface UserActionsMapper extends BaseMapper<UserActions> {
 
-    @Select("select * from user_actions")
+    @Select("select * from user_actions order by user_id asc, rgoods_id asc")
     List<UserActions> findAll();
 
     @Select("select * from user_actions where user_id = #{userId}")

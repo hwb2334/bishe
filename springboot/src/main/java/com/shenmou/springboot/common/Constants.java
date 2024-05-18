@@ -19,4 +19,7 @@ public interface Constants {
     Integer STATUS_ORDER_CODE_5 = 5; //用户待评价
     Integer STATUS_ORDER_CODE_6 = 6; //评价完成
     Integer STATUS_ORDER_CODE_7 = 7; //订单失效
+
+    Integer SCORE_WAY = 5;
+    Integer RECOMMAND_NUMS = 5;
 }
