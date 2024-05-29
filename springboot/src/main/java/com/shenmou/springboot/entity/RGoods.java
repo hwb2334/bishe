@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class RGoods {
     @TableId(value = "rgoods_id")
     private Integer rgoodsId;
-    private String name;
+    private String rgoodsName;
     private Integer cateId;
     private Integer mallId;
     private Integer num;
@@ -22,5 +22,6 @@ public class RGoods {
     private String description;
     private String status;
     private String img;
+    private Integer ini;
 }
 

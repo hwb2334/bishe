@@ -11,11 +11,13 @@ import java.util.List;
 
 @Service
 public interface IRGoodsService extends IService<RGoods> {
-    List<RGoodsDTO> findDTOAll();
+    List<RGoodsDTO> findDTOAll(String curAddress);
 
-    List<RGoodsDTO> findDTOByCateId(Integer cateId);
+    List<RGoodsDTO> findDTOByCateId(Integer cateId, String curAddress);
 
-    RGoodsMallDTO findById(Integer rgoodsId);
+    RGoodsMallDTO findById(Integer rgoodsId, Integer userId);
 
-    List<RGoodsDTO> findRecDTO(Integer userId);
+    List<RGoodsDTO> findRecDTO(Integer userId, String curAddress);
+
+    List<RGoodsDTO> findByName(String goodName, String curAddress);
 }

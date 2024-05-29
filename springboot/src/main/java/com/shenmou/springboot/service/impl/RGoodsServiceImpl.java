@@ -37,21 +37,21 @@ public class RGoodsServiceImpl extends ServiceImpl<RGoodsMapper, RGoods> impleme
     private Map<Integer, Integer> curNormMap;
 
     @Override
-    public List<RGoodsDTO> findDTOAll() {
+    public List<RGoodsDTO> findDTOAll(String curAddress) {
         List<RGoods> rGoods = list();
-        return change(rGoods);
+        return change(findByAddress(curAddress, rGoods));
     }
 
     @Override
-    public List<RGoodsDTO> findDTOByCateId(Integer cateId) {
+    public List<RGoodsDTO> findDTOByCateId(Integer cateId, String curAddress) {
         QueryWrapper<RGoods> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("cate_id", cateId);
         List<RGoods> rGoods = list(queryWrapper);
-        return change(rGoods);
+        return change(findByAddress(curAddress, rGoods));
     }
 
     @Override
-    public RGoodsMallDTO findById(Integer rgoodsId) {
+    public RGoodsMallDTO findById(Integer rgoodsId, Integer userId) {
         RGoodsMallDTO rGoodsMallDTO = new RGoodsMallDTO();
         QueryWrapper<RGoods> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("rgoods_id", rgoodsId);
@@ -63,26 +63,66 @@ public class RGoodsServiceImpl extends ServiceImpl<RGoodsMapper, RGoods> impleme
         mallToGoods.setMallId(mall.getMallId());
         mallToGoods.setIds(Collections.singletonList(good.getRgoodsId()));
         rGoodsMallDTO.setMallToGoods(Collections.singletonList(mallToGoods));
+        // 记录用户点击数据
+        QueryWrapper<UserActions> qw1 = new QueryWrapper<>();
+        qw1.eq("user_id", userId);
+        qw1.eq("rgoods_id", rgoodsId);
+        UserActions ua = userActionsMapper.selectOne(qw1);
+        if(ua == null){
+            ua = new UserActions();
+            ua.setUserId(userId);
+            ua.setRgoodsId(rgoodsId);
+            ua.setClicked(1);
+            ua.setScore(Constants.DEFAULT_ACTION_SCORE);
+            ua.setBuyed(0);
+            userActionsMapper.insert(ua);
+        }else{
+            ua.setClicked(ua.getClicked() == null ? 1 : ua.getClicked() + 1);
+            userActionsMapper.updateById(ua);
+        }
         return rGoodsMallDTO;
     }
 
     @Override
-    public List<RGoodsDTO> findRecDTO(Integer userId) {
+    public List<RGoodsDTO> findRecDTO(Integer userId, String curAddress) {
         uas = userActionsMapper.findAll();
         // 当前用户评价信息
         List<UserActions> curActions = uas
                 .stream()
                 .filter(ua -> ua.getUserId().equals(userId))
                 .collect(Collectors.toList());
-        List<RGoods> list = list();
+        List<RGoods> list = findByAddress(curAddress, list());
         // curActions 为空不推荐
         // curActions 不为空开始推荐
         if (curActions != null && curActions.size() != 0) {
-            return curRecommend(list, curActions, userId);
+            List<RGoodsDTO> RGDTOS = curRecommend(list, curActions, userId);
+            // 推荐商品数量为0 （用户把能买的所有商品都买过了）
+            if(RGDTOS.size() == 0) return change(list.stream().limit(Constants.RECOMMAND_NUMS).collect(Collectors.toList()));
+            else return curRecommend(list, curActions, userId);
         } else {
             List<RGoods> rec = list.stream().limit(Constants.RECOMMAND_NUMS).collect(Collectors.toList());
             return change(rec);
         }
+    }
+
+    @Override
+    public List<RGoodsDTO> findByName(String goodName, String curAddress) {
+        QueryWrapper<RGoods> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("rgoods_name", goodName);
+        List<RGoods> list = list(queryWrapper);
+        return change(findByAddress(curAddress, list));
+    }
+
+    private List<RGoods> findByAddress(String address, List<RGoods> list){
+        QueryWrapper<Mall> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("address", address);
+        List<Integer> mallIds = mallMapper.selectList(queryWrapper)
+                .stream()
+                .map(Mall::getMallId)
+                .collect(Collectors.toList());
+        return list.stream()
+                .filter(good -> mallIds.contains(good.getMallId()))
+                .collect(Collectors.toList());
     }
 
     private List<RGoodsDTO> change(List<RGoods> rGoods) {

@@ -15,11 +15,14 @@ public class Evaluation {
     private Integer evaId;
     @TableField(value = "rgoods_id")
     private Integer rgoodsId;
+    private Integer ordersId;
     private String response;
     private Integer userId;
     private Float rate;
     private Integer storemanId;
     private LocalDateTime date;
     private String review;
+//    已评价
+//    未评价
     private String status;
 }

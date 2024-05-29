@@ -13,10 +13,4 @@ class SpringbootApplicationTests {
 
 	@Resource
 	private IRGoodsService goodsService;
-	@Test
-	void runRec() {
-		List<RGoodsDTO> recDTO = goodsService.findRecDTO(14);
-		System.out.println(recDTO);
-	}
-
 }

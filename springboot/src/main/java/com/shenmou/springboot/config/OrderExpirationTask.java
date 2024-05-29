@@ -23,7 +23,7 @@ public class OrderExpirationTask {
     @Resource
     private OrdersDetailMapper ordersDetailMapper;
 
-    @Scheduled(fixedRate = 60000) // 每分钟执行一次
+    @Scheduled(fixedRate = 24 * 60 * 60000) // 每分钟执行一次
     public void checkOrderExpiration(){
         QueryWrapper<Orders> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("order_status", Constants.STATUS_ORDER_CODE_0);

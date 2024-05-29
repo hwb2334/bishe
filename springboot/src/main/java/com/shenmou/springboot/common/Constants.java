@@ -22,4 +22,5 @@ public interface Constants {
 
     Integer SCORE_WAY = 5;
     Integer RECOMMAND_NUMS = 5;
+    Double DEFAULT_ACTION_SCORE = 3.0; // 用户未评价商品默认分
 }

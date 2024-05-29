@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class RGoodsDTO {
     private Integer rgoodsId;
-    private String name;
+    private String rgoodsName;
     private Float price;
     private String img;
 }

@@ -1,6 +1,7 @@
 package com.shenmou.springboot.controller;
 
 import com.shenmou.springboot.common.Result;
+import com.shenmou.springboot.entity.Evaluation;
 import com.shenmou.springboot.entity.Orders;
 import com.shenmou.springboot.entity.OrdersDetail;
 import com.shenmou.springboot.mapper.OrdersDetailMapper;
@@ -41,5 +42,10 @@ public class OrdersController {
             ordersDetailMapper.insert(ordersDetail);
         }
         return Result.success();
+    }
+
+    @PostMapping("/evalGood")
+    public Result evalGood(@RequestBody Evaluation eval) {
+        return Result.success(ordersService.addEvaluation(eval));
     }
 }
